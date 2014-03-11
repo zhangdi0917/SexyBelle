@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jesson.sexybelle">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+
+    <application
+        android:name="com.jesson.sexybelle.BelleApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="531b325356240b08030db8bd" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="UMENG_CHANNEL_VALUE" />
+
+        <activity
+            android:name="com.umeng.fb.ConversationActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar" />
+        <activity
+            android:name="com.umeng.fb.ContactActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar" />
+
+
+        <meta-data
+            android:name="GDT_AD_APPID"
+            android:value="1101247501" />
+
+        <service
+            android:name="com.qq.e.comm.DownloadService"
+            android:exported="false"></service>
+
+        <activity
+            android:name="com.qq.e.ads.AdActivity"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <activity
+            android:name="com.qq.e.ads.InterstitialAdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+
+        <activity android:name="com.qq.e.ads.GdtBrowserActivity"></activity>
+
+        <activity
+            android:name="com.qq.e.appwall.AppwallActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation" />
+
+
+        <activity
+            android:name="com.jesson.sexybelle.activity.SplashActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.jesson.sexybelle.activity.MainActivity"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name="com.jesson.sexybelle.activity.ViewLargeActivity"
+            android:theme="@style/ViewLargeTheme" />
+
+        <activity
+            android:name=".activity.SettingActivity"
+            android:label="@string/title_setting" />
+
+    </application>
+
+</manifest>

@@ -1,0 +1,64 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.0.1'
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("jess.keystore")
+            storePassword "gua495310401"
+            keyAlias "jess.keystore"
+            keyPassword "gua495310401"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    productFlavors {
+        GooglePlay {}
+    }
+
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:+'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:+'
+    compile 'com.github.chrisbanes.actionbarpulltorefresh:library:+'
+    compile 'com.google.code.gson:gson:2.2.+'
+    compile 'de.greenrobot:eventbus:2.2.0'
+    compile 'de.greenrobot:greendao:+'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':JessKit')
+}
+
+android.applicationVariants.all { variant ->
+    println "${variant.productFlavors[0].name}"
+    variant.processManifest.doLast {
+        copy {
+            from("${buildDir}/manifests") {
+                include "${variant.dirName}/AndroidManifest.xml"
+            }
+            into("${buildDir}/manifests/$variant.name")
+
+            filter {
+                String line -> line.replaceAll("UMENG_CHANNEL_VALUE", "${variant.productFlavors[0].name}")
+            }
+
+            variant.processResources.manifestFile = file("${buildDir}/manifests/${variant.name}/${variant.dirName}/AndroidManifest.xml")
+        }
+    }
+}

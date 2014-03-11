@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context="com.jesson.sexybelle.activity.ViewLargeActivity">
+
+    <com.jesson.android.widget.HackyViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.jesson.android.widget.HackyViewPager>
+
+    <RelativeLayout
+        android:id="@+id/ad_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+    <TextView
+        android:id="@+id/pagination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/ad_content"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+</RelativeLayout>

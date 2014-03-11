@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.jesson.sexybelle.activity.ViewLargeActivity">
+
+    <item
+        android:id="@+id/action_save"
+        android:title="@string/action_save_gallery"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_wallpaper"
+        android:title="@string/action_wallpaper"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_collect"
+        android:title="@string/action_collect"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+
+</menu>
