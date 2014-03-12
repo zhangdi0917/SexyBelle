@@ -9,10 +9,12 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.jesson.android.Jess;
 import com.jesson.android.internet.InternetUtils;
+import com.jesson.android.utils.DeviceInfo;
 import com.jesson.android.widget.Toaster;
 import com.jesson.sexybelle.helper.SeriesHelper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by zhangdi on 14-3-4.
@@ -25,14 +27,16 @@ public class BelleApplication extends Application {
         Jess.init(this);
         Jess.DEBUG = AppConfig.DEBUG;
         initImageLoader();
+        MobclickAgent.setDebugMode(AppConfig.DEBUG);
         registerInternetError();
         SeriesHelper.getInstance().syncSeries(this);
     }
 
     private void initImageLoader() {
         ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(this)
+                .threadPoolSize(5)
                 .denyCacheImageMultipleSizesInMemory()
-                .memoryCacheSize(16 * 1024 * 1024)
+                .memoryCacheSize(DeviceInfo.MEM_SIZE / 16 * 1024 * 1024)
                 .discCacheSize(50 * 1024 * 1024)
                 .discCacheFileCount(100);
         if (AppConfig.DEBUG) {

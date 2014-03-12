@@ -5,7 +5,7 @@ package com.jesson.sexybelle;
  */
 public class AppConfig {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     public static final int SERIES_MODE = 1;
 

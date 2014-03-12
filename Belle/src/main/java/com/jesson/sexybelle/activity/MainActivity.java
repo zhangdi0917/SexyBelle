@@ -26,6 +26,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -67,7 +68,11 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        mSeries = SeriesHelper.getInstance().getSeriesList().get(position);
+        List<Series> seriesList = SeriesHelper.getInstance().getSeriesList();
+        if (position < 0 || position > seriesList.size() - 1) {
+            return;
+        }
+        mSeries = seriesList.get(position);
         if (mSeries.getType() == -2) {
             GdtAppwall.showAppwall();
         } else {
