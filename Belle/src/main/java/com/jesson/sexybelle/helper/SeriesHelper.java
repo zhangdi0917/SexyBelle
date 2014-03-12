@@ -38,36 +38,36 @@ public class SeriesHelper {
         if (mSeriesList == null || mSeriesList.size() == 0) {
             // 加载默认
             mSeriesList = defaultSeries();
-            mSeriesList.addAll(localSeries());
             dao.insertInTx(mSeriesList);
         }
+        mSeriesList.addAll(localSeries());
 
         new Thread() {
             @Override
             public void run() {
                 // load from server
-//                GetSeriesListRequest request = new GetSeriesListRequest();
-//                try {
-//                    GetSeriesListResponse response = InternetUtils.request(context, request);
-//                    if (response != null && response.seriesList != null && response.seriesList.size() > 0) {
-//                        List<Series> list = new ArrayList<Series>();
-//                        for (com.jesson.sexybelle.api.series.Series s : response.seriesList) {
-//                            Series series = new Series(s.type, s.title);
-//                            list.add(series);
-//                        }
-//                        // delete old
-//                        dao.deleteAll();
-//                        mSeriesList.clear();
-//                        // insert new
-//                        dao.insertInTx(list);
-//                        mSeriesList.addAll(list);
-//                        mSeriesList.addAll(localSeries());
-//                        // post event
-//                        EventBus.getDefault().post(new SeriesUpdatedEvent());
-//                    }
-//                } catch (NetWorkException e) {
-//                    e.printStackTrace();
-//                }
+                GetSeriesListRequest request = new GetSeriesListRequest();
+                try {
+                    GetSeriesListResponse response = InternetUtils.request(context, request);
+                    if (response != null && response.seriesList != null && response.seriesList.size() > 0) {
+                        List<Series> list = new ArrayList<Series>();
+                        for (com.jesson.sexybelle.api.series.Series s : response.seriesList) {
+                            Series series = new Series(s.type, s.title);
+                            list.add(series);
+                        }
+                        // delete old
+                        dao.deleteAll();
+                        mSeriesList.clear();
+                        // insert new
+                        dao.insertInTx(list);
+                        mSeriesList.addAll(list);
+                        mSeriesList.addAll(localSeries());
+                        // post event
+                        EventBus.getDefault().post(new SeriesUpdatedEvent());
+                    }
+                } catch (NetWorkException e) {
+                    e.printStackTrace();
+                }
             }
         }.start();
     }

@@ -36,7 +36,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ViewLargeActivity extends BaseActivity {
 
@@ -102,9 +101,8 @@ public class ViewLargeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        getActionBar().hide();
         setContentView(R.layout.activity_view_large);
+
         initBanner();
 
         if (savedInstanceState != null) {
@@ -228,7 +226,6 @@ public class ViewLargeActivity extends BaseActivity {
                 return true;
             case R.id.action_collect:
                 String url = getCurrentUrl();
-                HashMap<String, String> map = new HashMap<String, String>();
                 if (mCollectHelper.isCollected(url)) {
                     MobclickAgent.onEvent(ViewLargeActivity.this, "Collect", "collect");
                     mCollectHelper.cancelCollectBelle(url);

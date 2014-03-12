@@ -165,6 +165,7 @@ public class MainActivity extends BaseActivity
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("type", String.valueOf(mSeries.getType()));
         map.put("title", mSeries.getTitle());
+        map.put("mode", String.valueOf(AppConfig.SERIES_MODE));
         MobclickAgent.onEvent(this, "Refresh", map);
     }
 
