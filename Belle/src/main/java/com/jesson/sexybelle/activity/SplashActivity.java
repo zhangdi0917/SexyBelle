@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import com.jesson.android.utils.Logger;
 import com.jesson.sexybelle.AppConfig;
 import com.jesson.sexybelle.R;
+import com.jesson.sexybelle.helper.SeriesHelper;
 import com.qq.e.splash.SplashAd;
 import com.qq.e.splash.SplashAdListener;
 
@@ -30,6 +31,8 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
 
         mStartTime = System.currentTimeMillis();
+
+        SeriesHelper.getInstance().syncSeries(this);
 
         FrameLayout container = (FrameLayout) findViewById(R.id.splash_container);
         new SplashAd(this, container, AppConfig.GDT_AD_APPID, AppConfig.GDT_AD_SPLASH_POSID,

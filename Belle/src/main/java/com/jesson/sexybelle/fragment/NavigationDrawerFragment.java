@@ -28,6 +28,8 @@ import com.jesson.sexybelle.helper.SeriesHelper;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
@@ -73,6 +75,8 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        EventBus.getDefault().register(this);
+
         mSeriesList = SeriesHelper.getInstance().getSeriesList();
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
@@ -87,6 +91,12 @@ public class NavigationDrawerFragment extends Fragment {
 
         // Select either the default item (0) or the last selected item.
         selectItem(mCurrentSelectedPosition);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

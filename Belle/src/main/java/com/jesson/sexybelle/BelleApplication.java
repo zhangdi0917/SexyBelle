@@ -29,7 +29,6 @@ public class BelleApplication extends Application {
         initImageLoader();
         MobclickAgent.setDebugMode(AppConfig.DEBUG);
         registerInternetError();
-        SeriesHelper.getInstance().syncSeries(this);
     }
 
     private void initImageLoader() {
