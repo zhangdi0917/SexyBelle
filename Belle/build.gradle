@@ -2,13 +2,13 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.1'
+    buildToolsVersion '19.0.0'
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 19
         versionCode 2
-        versionName "1.0"
+        versionName '1.0'
     }
 
     signingConfigs {
@@ -24,16 +24,11 @@ android {
         release {
             signingConfig signingConfigs.release
             runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
 
-    lintOptions {
-        abortOnError false
-    }
-
     productFlavors {
-        GooglePlay {}
+        google {}
     }
 
 }
@@ -45,24 +40,24 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.+'
     compile 'de.greenrobot:eventbus:2.2.0'
     compile 'de.greenrobot:greendao:+'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':JessKit')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-android.applicationVariants.all { variant ->
-    println "${variant.productFlavors[0].name}"
-    variant.processManifest.doLast {
-        copy {
-            from("${buildDir}/manifests") {
-                include "${variant.dirName}/AndroidManifest.xml"
-            }
-            into("${buildDir}/manifests/$variant.name")
-
-            filter {
-                String line -> line.replaceAll("UMENG_CHANNEL_VALUE", "${variant.productFlavors[0].name}")
-            }
-
-            variant.processResources.manifestFile = file("${buildDir}/manifests/${variant.name}/${variant.dirName}/AndroidManifest.xml")
-        }
-    }
-}
+//android.applicationVariants.all { variant ->
+//    println "${variant.productFlavors[0].name}"
+//    variant.processManifest.doLast {
+//        copy {
+//            from("${buildDir}/manifests") {
+//                include "${variant.dirName}/AndroidManifest.xml"
+//            }
+//            into("${buildDir}/manifests/$variant.name")
+//
+//            filter {
+//                String line -> line.replaceAll("UMENG_CHANNEL_VALUE", "${variant.productFlavors[0].name}")
+//            }
+//
+//            variant.processResources.manifestFile = file("${buildDir}/manifests/${variant.name}/${variant.dirName}/AndroidManifest.xml")
+//        }
+//    }
+//}
