@@ -4,7 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jesson.belle.activity.MainActivity">
+    tools:context="com.jesson.sexybelle.activity.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,6 +35,6 @@
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:name="com.jesson.belle.fragment.NavigationDrawerFragment" />
+        android:name="com.jesson.sexybelle.fragment.NavigationDrawerFragment" />
 
 </android.support.v4.widget.DrawerLayout>

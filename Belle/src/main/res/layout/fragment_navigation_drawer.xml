@@ -4,4 +4,4 @@
     android:layout_height="match_parent"
     android:choiceMode="singleChoice"
     android:background="#ffffff"
-    tools:context="com.jesson.belle.fragment.NavigationDrawerFragment" />
+    tools:context="com.jesson.sexybelle.fragment.NavigationDrawerFragment" />
