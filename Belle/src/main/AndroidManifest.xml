@@ -24,7 +24,7 @@
             android:value="531b325356240b08030db8bd" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="wandoujia" />
+            android:value="UMENG_CHANNEL_VALUE" />
 
         <activity
             android:name="com.umeng.fb.ConversationActivity"

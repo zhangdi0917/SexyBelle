@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.0'
+    buildToolsVersion '19.0.1'
 
     defaultConfig {
         minSdkVersion 14
@@ -27,8 +27,13 @@ android {
         }
     }
 
+
+    lintOptions {
+        abortOnError false
+    }
+
     productFlavors {
-        wandoujia {}
+        qq{}
     }
 
 }
@@ -44,20 +49,23 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-//android.applicationVariants.all { variant ->
-//    println "${variant.productFlavors[0].name}"
-//    variant.processManifest.doLast {
-//        copy {
-//            from("${buildDir}/manifests") {
-//                include "${variant.dirName}/AndroidManifest.xml"
-//            }
-//            into("${buildDir}/manifests/$variant.name")
-//
-//            filter {
-//                String line -> line.replaceAll("UMENG_CHANNEL_VALUE", "${variant.productFlavors[0].name}")
-//            }
-//
-//            variant.processResources.manifestFile = file("${buildDir}/manifests/${variant.name}/${variant.dirName}/AndroidManifest.xml")
-//        }
-//    }
-//}
+android.applicationVariants.all { variant ->
+    def flavor = "debug"
+    if (variant.productFlavors.size() > 0) {
+        flavor = variant.productFlavors[0].name
+    }
+    variant.processManifest.doLast {
+        copy {
+            from("${buildDir}/manifests") {
+                include "${variant.dirName}/AndroidManifest.xml"
+            }
+            into("${buildDir}/manifests/$variant.name")
+
+            filter {
+                String line -> line.replaceAll("UMENG_CHANNEL_VALUE", "${flavor}")
+            }
+
+            variant.processResources.manifestFile = file("${buildDir}/manifests/${variant.name}/${variant.dirName}/AndroidManifest.xml")
+        }
+    }
+}

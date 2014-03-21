@@ -27,6 +27,7 @@ public class BelleApplication extends Application {
         Jess.DEBUG = AppConfig.DEBUG;
         initImageLoader();
         MobclickAgent.setDebugMode(AppConfig.DEBUG);
+        MobclickAgent.flush(this);
         registerInternetError();
     }
 
