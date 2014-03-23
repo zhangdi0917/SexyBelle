@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jesson.sexybelle">
+    package="com.jesson.belle">
 
     <uses-sdk android:minSdkVersion="14" />
 
@@ -13,9 +13,9 @@
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application
-        android:name="com.jesson.sexybelle.BelleApplication"
+        android:name="com.jesson.belle.BelleApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_launcher_google"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
@@ -59,7 +59,7 @@
 
 
         <activity
-            android:name="com.jesson.sexybelle.activity.SplashActivity"
+            android:name="com.jesson.belle.activity.SplashActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -68,15 +68,15 @@
         </activity>
 
         <activity
-            android:name="com.jesson.sexybelle.activity.MainActivity"
+            android:name="com.jesson.belle.activity.MainActivity"
             android:label="@string/app_name" />
 
         <activity
-            android:name="com.jesson.sexybelle.activity.ViewLargeActivity"
+            android:name="com.jesson.belle.activity.ViewLargeActivity"
             android:theme="@style/ViewLargeTheme" />
 
         <activity
-            android:name="com.jesson.sexybelle.activity.SettingActivity"
+            android:name="com.jesson.belle.activity.SettingActivity"
             android:label="@string/title_setting" />
 
     </application>
