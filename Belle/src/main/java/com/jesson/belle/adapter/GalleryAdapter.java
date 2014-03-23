@@ -22,12 +22,12 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 /**
  * Created by zhangdi on 14-3-8.
  */
-public class ViewLargeAdapter extends PagerAdapter {
+public class GalleryAdapter extends PagerAdapter {
 
     private Activity mActivity;
     private List<String> mUrlList;
 
-    public ViewLargeAdapter(Activity activity, List<String> urls) {
+    public GalleryAdapter(Activity activity, List<String> urls) {
         this.mActivity = activity;
         this.mUrlList = urls;
     }

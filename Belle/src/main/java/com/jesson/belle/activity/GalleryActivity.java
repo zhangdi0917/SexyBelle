@@ -6,24 +6,24 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.jesson.android.widget.Toaster;
 import com.jesson.belle.AppConfig;
 import com.jesson.belle.R;
-import com.jesson.belle.adapter.ViewLargeAdapter;
+import com.jesson.belle.adapter.GalleryAdapter;
 import com.jesson.belle.helper.CollectHelper;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.qq.e.ads.AdRequest;
 import com.qq.e.ads.AdSize;
@@ -33,11 +33,12 @@ import com.qq.e.ads.InterstitialAdListener;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ViewLargeActivity extends BaseActivity {
+public class GalleryActivity extends BaseActivity {
 
     private static final String EXTRA_TITLE = "title";
     private static final String EXTRA_PHOTO_URI_LIST = "photo_uri_list";
@@ -47,12 +48,14 @@ public class ViewLargeActivity extends BaseActivity {
 
     private ViewPager mViewPager;
 
-    private ViewLargeAdapter mPagerAdapter;
+    private GalleryAdapter mPagerAdapter;
 
     private ArrayList<String> mPhotoUriList;
     private String mTitle;
     private int mPosition;
     private int mSwitchCount = 0;
+
+    private Intent mShareIntent;
 
     private CollectHelper mCollectHelper;
 
@@ -67,29 +70,35 @@ public class ViewLargeActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("title", mTitle);
             switch (msg.what) {
                 case WHAT_SAVE_SUCCESS:
-                    Toaster.show(ViewLargeActivity.this, R.string.save_gallery_success);
-                    MobclickAgent.onEvent(ViewLargeActivity.this, "SaveGallery", "success");
+                    Toaster.show(GalleryActivity.this, R.string.save_gallery_success);
+                    map.put("ifSuccess", "success");
+                    MobclickAgent.onEvent(GalleryActivity.this, "SaveGallery", map);
                     break;
                 case WHAT_SAVE_FAIL:
-                    Toaster.show(ViewLargeActivity.this, R.string.save_gallery_fail);
-                    MobclickAgent.onEvent(ViewLargeActivity.this, "SaveGallery", "fail");
+                    Toaster.show(GalleryActivity.this, R.string.save_gallery_fail);
+                    map.put("ifSuccess", "fail");
+                    MobclickAgent.onEvent(GalleryActivity.this, "SaveGallery", map);
                     break;
                 case WHAT_WALLPAPER_SUCCESS:
-                    Toaster.show(ViewLargeActivity.this, R.string.set_wallpaper_success);
-                    MobclickAgent.onEvent(ViewLargeActivity.this, "Wallpaper", "success");
+                    Toaster.show(GalleryActivity.this, R.string.set_wallpaper_success);
+                    map.put("ifSuccess", "success");
+                    MobclickAgent.onEvent(GalleryActivity.this, "Wallpaper", map);
                     break;
                 case WHAT_WALLPAPER_FAIL:
-                    Toaster.show(ViewLargeActivity.this, R.string.set_wallpaper_success);
-                    MobclickAgent.onEvent(ViewLargeActivity.this, "Wallpaper", "fail");
+                    Toaster.show(GalleryActivity.this, R.string.set_wallpaper_success);
+                    map.put("ifSuccess", "fail");
+                    MobclickAgent.onEvent(GalleryActivity.this, "Wallpaper", map);
                     break;
             }
         }
     };
 
     public static void startViewLarge(Context context, String title, ArrayList<String> uriList, int position) {
-        Intent intent = new Intent(context, ViewLargeActivity.class);
+        Intent intent = new Intent(context, GalleryActivity.class);
         intent.putExtra(EXTRA_TITLE, title);
         intent.putStringArrayListExtra(EXTRA_PHOTO_URI_LIST, uriList);
         intent.putExtra(EXTRA_POSITION, position);
@@ -116,11 +125,12 @@ public class ViewLargeActivity extends BaseActivity {
         }
 
         getActionBar().setTitle(mTitle);
+        mShareIntent = getDefaultIntent();
 
         mPaginationTv = (TextView) findViewById(R.id.pagination);
 
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        mPagerAdapter = new ViewLargeAdapter(this, mPhotoUriList);
+        mPagerAdapter = new GalleryAdapter(this, mPhotoUriList);
         mViewPager.setAdapter(mPagerAdapter);
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -136,6 +146,12 @@ public class ViewLargeActivity extends BaseActivity {
 
                 if (++mSwitchCount % 10 == 0) {
                     iad.loadAd();
+                }
+
+                String url = getCurrentUrl();
+                if (!TextUtils.isEmpty(url)) {
+                    File file = ImageLoader.getInstance().getDiscCache().get(url);
+                    mShareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
                 }
             }
 
@@ -200,9 +216,19 @@ public class ViewLargeActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         getMenuInflater().inflate(R.menu.view_large, menu);
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        ShareActionProvider shareActionProvider = (ShareActionProvider)
+                menu.findItem(R.id.action_share).getActionProvider();
+        shareActionProvider.setShareIntent(mShareIntent);
+        shareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener() {
+            @Override
+            public boolean onShareTargetSelected(ShareActionProvider shareActionProvider, Intent intent) {
+                MobclickAgent.onEvent(GalleryActivity.this, "Share", mTitle);
+                return true;
+            }
+        });
+        shareActionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
         return true;
     }
 
@@ -221,29 +247,39 @@ public class ViewLargeActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case android.R.id.home: {
                 finish();
                 return true;
-            case R.id.action_save:
+            }
+            case R.id.action_save: {
                 saveToGallery();
                 return true;
-            case R.id.action_wallpaper:
+            }
+            case R.id.action_wallpaper: {
                 setWallpaper();
                 return true;
-            case R.id.action_collect:
+            }
+            case R.id.action_collect: {
                 String url = getCurrentUrl();
                 if (mCollectHelper.isCollected(url)) {
-                    MobclickAgent.onEvent(ViewLargeActivity.this, "Collect", "collect");
+                    MobclickAgent.onEvent(GalleryActivity.this, "Collect", "collect");
                     mCollectHelper.cancelCollectBelle(url);
                     Toaster.show(this, R.string.cancel_collect_success);
                 } else {
-                    MobclickAgent.onEvent(ViewLargeActivity.this, "Collect", "cancel collect");
+                    MobclickAgent.onEvent(GalleryActivity.this, "Collect", "cancel collect");
                     mCollectHelper.collectBelle(url);
                     Toaster.show(this, R.string.collect_success);
                 }
                 return true;
+            }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private Intent getDefaultIntent() {
+        mShareIntent = new Intent(Intent.ACTION_SEND);
+        mShareIntent.setType("image/*");
+        return mShareIntent;
     }
 
     private String getCurrentUrl() {
@@ -258,17 +294,12 @@ public class ViewLargeActivity extends BaseActivity {
             @Override
             public void run() {
                 String url = mPhotoUriList.get(mPosition);
-                Bitmap bitmap = ImageLoader.getInstance().loadImageSync(url, new DisplayImageOptions.Builder().build());
-
-                if (bitmap != null) {
+                if (!TextUtils.isEmpty(url)) {
                     try {
-                        File cacheDir = getExternalCacheDir();
-                        File saveFile = new File(cacheDir, "tmp.jpg");
-                        FileOutputStream fos = new FileOutputStream(saveFile);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                        if (saveFile.exists()) {
+                        File file = ImageLoader.getInstance().getDiscCache().get(url);
+                        if (file != null && file.exists()) {
                             ContentResolver cr = getContentResolver();
-                            String uri = MediaStore.Images.Media.insertImage(cr, saveFile.getAbsolutePath(), "belle" + url, "belle" + url);
+                            String uri = MediaStore.Images.Media.insertImage(cr, file.getAbsolutePath(), "belle" + url, "belle" + url);
 
                             String data = null;
                             String[] projection = {MediaStore.Images.Media.DATA};
@@ -281,13 +312,15 @@ public class ViewLargeActivity extends BaseActivity {
                             }
                             if (data != null) {
                                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(data))));
-                                saveFile.delete();
                                 mHandler.sendEmptyMessage(WHAT_SAVE_SUCCESS);
                                 return;
                             }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                    } catch (OutOfMemoryError error) {
+                        error.printStackTrace();
+                        System.gc();
                     }
                 }
                 mHandler.sendEmptyMessage(WHAT_SAVE_FAIL);
@@ -300,16 +333,20 @@ public class ViewLargeActivity extends BaseActivity {
             @Override
             public void run() {
                 String url = mPhotoUriList.get(mPosition);
-                Bitmap bitmap = ImageLoader.getInstance().loadImageSync(url, new DisplayImageOptions.Builder().build());
-
-                WallpaperManager wallpaperManager = WallpaperManager.getInstance(ViewLargeActivity.this);
-                try {
-                    wallpaperManager.setBitmap(bitmap);
-                    mHandler.sendEmptyMessage(WHAT_WALLPAPER_SUCCESS);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    mHandler.sendEmptyMessage(WHAT_WALLPAPER_FAIL);
+                if (!TextUtils.isEmpty(url)) {
+                    File file = ImageLoader.getInstance().getDiscCache().get(url);
+                    if (file != null && file.exists()) {
+                        WallpaperManager wallpaperManager = WallpaperManager.getInstance(GalleryActivity.this);
+                        try {
+                            wallpaperManager.setStream(new FileInputStream(file));
+                            mHandler.sendEmptyMessage(WHAT_WALLPAPER_SUCCESS);
+                            return;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
+                mHandler.sendEmptyMessage(WHAT_WALLPAPER_FAIL);
             }
         }.start();
 

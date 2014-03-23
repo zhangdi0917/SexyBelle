@@ -5,6 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.jesson.android.Jess;
@@ -16,6 +19,9 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.common.Res;
+
+import java.util.Objects;
 
 /**
  * Created by zhangdi on 14-3-4.
@@ -25,22 +31,38 @@ public class BelleApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        initSeriesModel();
+
         Jess.init(this);
         Jess.DEBUG = AppConfig.DEBUG;
+
+        initSeriesModel();
+
         initImageLoader();
+
+        Res.setPackageName("com.jesson.belle");
         MobclickAgent.setDebugMode(AppConfig.DEBUG);
         MobclickAgent.flush(this);
+
         registerInternetError();
     }
 
     private void initSeriesModel() {
-        String packageName = getPackageName();
-        if (packageName.equals("com.jesson.belle")) {
+        String channel = getMetaData("UMENG_CHANNEL");
+        if (channel != null && "google".equals(channel)) {
             AppConfig.SERIES_MODE = 1;
         } else {
             AppConfig.SERIES_MODE = 2;
         }
+    }
+
+    private String getMetaData(String key) {
+        try {
+            Bundle metaData = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA).metaData;
+            return metaData.getString(key);
+        } catch (Exception e) {
+
+        }
+        return null;
     }
 
     private void initImageLoader() {

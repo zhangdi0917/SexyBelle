@@ -10,10 +10,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.jesson.android.utils.Logger;
 import com.jesson.belle.R;
+import com.jesson.belle.activity.GalleryActivity;
 import com.jesson.belle.activity.MainActivity;
-import com.jesson.belle.activity.ViewLargeActivity;
 import com.jesson.belle.adapter.PhotoStreamAdapter;
 import com.jesson.belle.api.belle.Belle;
 import com.jesson.belle.dao.model.CollectedBelle;
@@ -118,7 +117,7 @@ public class PhotoStreamFragment extends Fragment implements OnRefreshListener {
                 for (Belle belle : mBelles) {
                     uriList.add(belle.url);
                 }
-                ViewLargeActivity.startViewLarge(getActivity(), mSeries.getTitle(), uriList, i);
+                GalleryActivity.startViewLarge(getActivity(), mSeries.getTitle(), uriList, i);
             }
         });
 

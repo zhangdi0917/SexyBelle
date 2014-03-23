@@ -48,7 +48,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:support-v4:18.0.+'
     compile 'com.nostra13.universalimageloader:universal-image-loader:+'
     compile 'com.github.chrisbanes.actionbarpulltorefresh:library:+'
     compile 'com.google.code.gson:gson:2.2.+'
