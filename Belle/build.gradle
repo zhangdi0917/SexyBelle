@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 19
-        versionCode 3
-        versionName '1.1'
+        versionCode 4
+        versionName '1.2'
     }
 
     signingConfigs {
@@ -35,14 +35,19 @@ android {
     productFlavors {
         google {
             packageName = 'com.jesson.belle'
-
         }
-        baidu {
-            packageName = 'com.jesson.sexybelle'
-        }
-        market360 {
-            packageName = 'com.jesson.sexybelle'
-        }
+//        baidu {
+//            packageName = 'com.jesson.sexybelle'
+//        }
+//        market360 {
+//            packageName = 'com.jesson.sexybelle'
+//        }
+//        qq {
+//            packageName = 'com.jesson.sexybelle'
+//        }
+//        wandoujia {
+//            packageName = 'com.jesson.sexybelle'
+//        }
     }
 
 }
