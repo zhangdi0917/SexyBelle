@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jesson.belle">
-
-    <uses-sdk android:minSdkVersion="14" />
+    package="com.jesson.sexybelle">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application
-        android:name="com.jesson.belle.BelleApplication"
+        android:name=".BelleApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
+        <!-- umeng -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="531b325356240b08030db8bd" />
@@ -32,34 +33,31 @@
         <activity
             android:name="com.umeng.fb.ContactActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar" />
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" />
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <!-- umeng -->
 
-
+        <!-- gdt -->
         <meta-data
             android:name="GDT_AD_APPID"
             android:value="1101252680" />
 
         <service
             android:name="com.qq.e.comm.DownloadService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <activity
             android:name="com.qq.e.ads.AdActivity"
             android:theme="@android:style/Theme.Translucent" />
+        <!-- gdt -->
 
         <activity
-            android:name="com.qq.e.ads.InterstitialAdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
-
-        <activity android:name="com.qq.e.ads.GdtBrowserActivity"></activity>
-
-        <activity
-            android:name="com.qq.e.appwall.AppwallActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation" />
-
-
-        <activity
-            android:name="com.jesson.belle.activity.SplashActivity"
+            android:name=".activity.SplashActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -68,15 +66,15 @@
         </activity>
 
         <activity
-            android:name="com.jesson.belle.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name" />
 
         <activity
-            android:name="com.jesson.belle.activity.GalleryActivity"
+            android:name=".activity.GalleryActivity"
             android:theme="@style/ViewLargeTheme" />
 
         <activity
-            android:name="com.jesson.belle.activity.SettingActivity"
+            android:name=".activity.SettingActivity"
             android:label="@string/title_setting" />
 
     </application>

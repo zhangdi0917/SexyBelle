@@ -9,6 +9,7 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">设置</string>
     <string name="action_feedback">反馈</string>
+    <string name="action_update">更新</string>
     <string name="action_refresh">刷新</string>
 
     <string name="action_save_gallery">保存相册</string>

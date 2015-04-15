@@ -1,14 +1,14 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.0.1'
+    compileSdkVersion 21
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 19
-        versionCode 4
-        versionName '1.2'
+        targetSdkVersion 21
+        versionCode 22
+        versionName '2.2'
     }
 
     signingConfigs {
@@ -22,79 +22,67 @@ android {
 
     buildTypes {
         release {
+            debuggable false
             signingConfig signingConfigs.release
-            runProguard false
+            minifyEnabled false
         }
     }
 
+    productFlavors {
+//        google {
+//
+//        }
+//        baidu {
+//
+//        }
+        market360 {
+
+        }
+//        qq {
+//
+//        }
+//        wandoujia {
+//
+//        }
+    }
 
     lintOptions {
         abortOnError false
     }
 
-    productFlavors {
-        google {
-            packageName = 'com.jesson.belle'
-        }
-//        baidu {
-//            packageName = 'com.jesson.sexybelle'
-//        }
-//        market360 {
-//            packageName = 'com.jesson.sexybelle'
-//        }
-//        qq {
-//            packageName = 'com.jesson.sexybelle'
-//        }
-//        wandoujia {
-//            packageName = 'com.jesson.sexybelle'
-//        }
-    }
-
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:18.0.+'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:+'
+    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.github.chrisbanes.actionbarpulltorefresh:library:+'
-    compile 'com.google.code.gson:gson:2.2.+'
+    compile 'com.google.code.gson:gson:2.3'
     compile 'de.greenrobot:eventbus:2.2.0'
-    compile 'de.greenrobot:greendao:+'
+    compile 'de.greenrobot:greendao:1.3.7'
+
     compile project(':JessKit')
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 android.applicationVariants.all { variant ->
-    def flavor = "debug"
-    if (variant.productFlavors.size() > 0) {
-        flavor = variant.productFlavors[0].name
-    }
-    def label = '@string/app_name'
-    if (flavor == 'google') {
-        label = '@string/app_name_google'
-    }
-    def icon = '@drawable/ic_launcher'
-    if (flavor == 'google') {
-        icon = '@drawable/ic_launcher_google'
-    }
+    variant.outputs[0].processManifest.doLast {
+        def flavor = "UMENG_CHANNEL_VALUE"
+        if (variant.productFlavors.size() > 0) {
+            flavor = variant.productFlavors[0].name
+        }
 
-    variant.processManifest.doLast {
         copy {
-            from("${buildDir}/manifests") {
+            from("${buildDir}/intermediates/manifests/full") {
                 include "${variant.dirName}/AndroidManifest.xml"
             }
-            into("${buildDir}/manifests/$variant.name")
+            into("${buildDir}/intermediates/manifests/full/${variant.name}")
 
+            // 替换友盟渠道号
             filter {
                 String line -> line.replaceAll("UMENG_CHANNEL_VALUE", "${flavor}")
             }
-            filter {
-                String line -> line.replaceAll("@string/app_name", "${label}")
-            }
-            filter {
-                String line -> line.replaceAll("@drawable/ic_launcher", "${icon}")
-            }
 
-            variant.processResources.manifestFile = file("${buildDir}/manifests/${variant.name}/${variant.dirName}/AndroidManifest.xml")
+            variant.outputs[0].processResources.manifestFile = file("${buildDir}/intermediates/manifests/full/${variant.name}/${variant.dirName}/AndroidManifest.xml")
         }
     }
 }
