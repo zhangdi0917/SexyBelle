@@ -35,15 +35,18 @@ android {
 //        baidu {
 //
 //        }
-        market360 {
-
-        }
+//        market360 {
+//
+//        }
 //        qq {
 //
 //        }
 //        wandoujia {
 //
 //        }
+        uc {
+
+        }
     }
 
     lintOptions {

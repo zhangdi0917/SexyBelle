@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.jesson.android.Jess;
@@ -17,9 +15,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-/**
- * Created by zhangdi on 14-3-4.
- */
 public class BelleApplication extends Application {
 
     @Override
@@ -29,30 +24,9 @@ public class BelleApplication extends Application {
         Jess.init(this);
         Jess.DEBUG = AppConfig.DEBUG;
 
-        initSeriesModel();
-
         initImageLoader();
 
         registerInternetError();
-    }
-
-    private void initSeriesModel() {
-        String channel = getMetaData("UMENG_CHANNEL");
-        if (channel != null && "google".equals(channel)) {
-            AppConfig.SERIES_MODE = 1;
-        } else {
-            AppConfig.SERIES_MODE = 2;
-        }
-    }
-
-    private String getMetaData(String key) {
-        try {
-            Bundle metaData = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA).metaData;
-            return metaData.getString(key);
-        } catch (Exception e) {
-
-        }
-        return null;
     }
 
     private void initImageLoader() {
@@ -60,12 +34,12 @@ public class BelleApplication extends Application {
                 .threadPoolSize(8)
                 .denyCacheImageMultipleSizesInMemory()
                 .memoryCacheSize(DeviceInfo.MEM_SIZE / 16 * 1024 * 1024)
-                .discCacheSize(50 * 1024 * 1024)
-                .discCacheFileCount(100)
+                .diskCacheSize(50 * 1024 * 1024)
+                .diskCacheFileCount(100)
                 .defaultDisplayImageOptions(new DisplayImageOptions.Builder()
                         .resetViewBeforeLoading(true)
                         .cacheInMemory(true)
-                        .cacheOnDisc(true)
+                        .cacheOnDisk(true)
                         .considerExifParams(true)
                         .build());
         if (AppConfig.DEBUG) {

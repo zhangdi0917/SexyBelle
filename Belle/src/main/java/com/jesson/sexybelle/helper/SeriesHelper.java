@@ -101,8 +101,6 @@ public class SeriesHelper {
             list.add(series13);
             Series series14 = new Series(14, "校花");
             list.add(series14);
-            Series series1 = new Series(1, "性感美女");
-            list.add(series1);
         }
         return list;
     }
@@ -111,7 +109,7 @@ public class SeriesHelper {
         List<Series> list = new ArrayList<Series>();
         Series collect = new Series(-1, "我的收藏");
         list.add(collect);
-        if (AppConfig.SERIES_MODE == 2) {
+        if (AppConfig.SERIES_MODE != 1) {
             Series suggest = new Series(-2, "推荐应用");
             list.add(suggest);
         }

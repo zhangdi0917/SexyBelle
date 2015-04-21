@@ -1,13 +1,10 @@
 package com.jesson.sexybelle;
 
-/**
- * Created by zhangdi on 14-3-7.
- */
 public class AppConfig {
 
     public static final boolean DEBUG = false;
 
-    public static int SERIES_MODE = 2;
+    public static int SERIES_MODE = 3;
 
     public static final String GDT_AD_APPID = "1101252680";
 
